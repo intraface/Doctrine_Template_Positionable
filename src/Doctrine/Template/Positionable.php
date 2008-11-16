@@ -96,6 +96,15 @@ class Doctrine_Template_Positionable extends Doctrine_Template
         return true;
     }
 
+    private function getExtraWhereWithPosition($position)
+    {
+        $where = 'position = ' . intval($position);
+        if (!empty($this->_options['extra_where'])) {
+            $where .= ' AND ' . $this->_options['extra_where'];
+        }
+        return $where;
+    }
+
     /**
      * Moves the item one position down
      *
@@ -109,9 +118,18 @@ class Doctrine_Template_Positionable extends Doctrine_Template
         }
 
         $table = Doctrine::getTable($object->getTable()->name);
-        $row = $table->findOneByPosition($object->position + 1);
-        $row->position = $object->position;
-        $row->save();
+        //$row = $table->findOneByPosition($object->position + 1);
+
+        $q = Doctrine_Query::create();
+
+        $rows = $q->select($this->_options['name'], 'id')
+          ->from($object->getTable()->name)
+          ->where($this->getExtraWhereWithPosition($object->position + 1))
+          ->orderby($this->_options['name'] . ' ASC')
+          ->execute();
+
+        $rows[0]->position = $object->position;
+        $rows[0]->save();
 
         $object->position = $object->position + 1;
         $object->save();
@@ -127,7 +145,6 @@ class Doctrine_Template_Positionable extends Doctrine_Template
     public function moveTo($position)
     {
         // first we will add one to every post from the position this post will get
-        // echo "\nfirst reposition";
         $this->reposition($position, $position + 1);
 
         $object = $this->getInvoker();
@@ -136,7 +153,6 @@ class Doctrine_Template_Positionable extends Doctrine_Template
         }
         $object->position = $position;
         $object->save();
-        // echo "\nsecond reposition";
         $this->reposition();
 
         return true;
@@ -191,9 +207,7 @@ class Doctrine_Template_Positionable extends Doctrine_Template
           ->execute();
 
         foreach ($rows as $row) {
-            //echo  "\n" . $row->name . ' has ' . $row->position;
             $row->position = $new_position;
-            //echo ' and becomes ' . $new_position;
             $row->save();
             $new_position++;
         }

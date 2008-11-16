@@ -23,21 +23,6 @@ require_once dirname(__FILE__) . '/../src/Doctrine/Template/Positionable.php';
 
 PHPUnit_Util_Filter::addDirectoryToWhitelist(realpath(dirname(__FILE__) . '/../src/'));
 
-class StuffWhichShouldBePositionable extends Doctrine_Record
-{
-    function setTableDefinition()
-    {
-        $this->hasColumn('name', 'string', 255);
-        $this->hasColumn('belong_to_id', 'integer', 11);
-    }
-
-    function setUp()
-    {
-        $this->actAs('Positionable');
-    }
-}
-
-
 class StuffWhichShouldBePositionableWithExtraWhere extends Doctrine_Record
 {
     function setTableDefinition()
@@ -48,7 +33,7 @@ class StuffWhichShouldBePositionableWithExtraWhere extends Doctrine_Record
 
     function setUp()
     {
-        $options = array('extra_where' => 'belong_to_id = 1');
+        $options = array('extra_where' => array('belong_to_id'));
         $this->actAs('Positionable', $options);
     }
 }
@@ -64,7 +49,7 @@ class StuffWhichShouldBePositionableWithExtraWhere extends Doctrine_Record
  * @version   <package-version>
  * @link      http://public.intraface.dk
  */
-class PositionableTest extends PHPUnit_Framework_TestCase
+class PositionableWithExtraWhereTest extends PHPUnit_Framework_TestCase
 {
     private $record;
     private $record1;
@@ -77,34 +62,34 @@ class PositionableTest extends PHPUnit_Framework_TestCase
     {
         $this->sqlite_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'sandbox.db';
         Doctrine_Manager::connection('sqlite:///' . $this->sqlite_file, 'sandbox');
-        Doctrine::createTablesFromArray(array('StuffWhichShouldBePositionable'));
+        Doctrine::createTablesFromArray(array('StuffWhichShouldBePositionableWithExtraWhere'));
 
         $this->createRecords();
     }
 
     function createRecords()
     {
-        $this->record = new StuffWhichShouldBePositionable();
+        $this->record = new StuffWhichShouldBePositionableWithExtraWhere();
         $this->record->name = 'test1';
         $this->record->belong_to_id = 1;
         $this->record->save();
 
-        $this->record1 = new StuffWhichShouldBePositionable();
+        $this->record1 = new StuffWhichShouldBePositionableWithExtraWhere();
         $this->record1->name = 'test2';
         $this->record1->belong_to_id = 1;
         $this->record1->save();
 
-        $this->record2 = new StuffWhichShouldBePositionable();
+        $this->record2 = new StuffWhichShouldBePositionableWithExtraWhere();
         $this->record2->belong_to_id = 1;
         $this->record2->name = 'test3';
         $this->record2->save();
 
-        $this->record3 = new StuffWhichShouldBePositionable();
+        $this->record3 = new StuffWhichShouldBePositionableWithExtraWhere();
         $this->record3->belong_to_id = 2;
         $this->record3->name = 'test4';
         $this->record3->save();
 
-        $this->record4 = new StuffWhichShouldBePositionable();
+        $this->record4 = new StuffWhichShouldBePositionableWithExtraWhere();
         $this->record4->belong_to_id = 2;
         $this->record4->name = 'test5';
         $this->record4->save();
@@ -112,6 +97,9 @@ class PositionableTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->record->getPosition());
         $this->assertEquals(2, $this->record1->getPosition());
         $this->assertEquals(3, $this->record2->getPosition());
+
+        $this->assertEquals(1, $this->record3->getPosition());
+        $this->assertEquals(2, $this->record4->getPosition());
     }
 
     function tearDown()
