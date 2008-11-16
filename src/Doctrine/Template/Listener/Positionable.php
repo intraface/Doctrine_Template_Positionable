@@ -83,8 +83,8 @@ class Doctrine_Template_Listener_Positionable extends Doctrine_Record_Listener
         try {
             if (!empty($this->_options['extra_where'])) {
                 try {
-                    $q = Doctrine_Query::create();
-                    $q->select('*')->from($record->getTable());
+                    $q = $record->getTable()->createQuery(); /* Doctrine_Query::create(); */
+                    $q->select('*');
                     foreach ((array)$this->_options['extra_where'] as $where) {
                         //$q->addWhere($where . ' = ?', array($record->{$where}));
                     }
