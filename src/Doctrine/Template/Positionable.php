@@ -81,6 +81,8 @@ class Doctrine_Template_Positionable extends Doctrine_Template
     public function moveUp()
     {
         $object = $this->getInvoker();
+        $this->reposition();
+
         if ($object->position <= 1) {
             throw new Exception('Item is already at postion 1. Could not move it any further up.');
         }
@@ -117,6 +119,8 @@ class Doctrine_Template_Positionable extends Doctrine_Template
     public function moveDown()
     {
         $object = $this->getInvoker();
+        $this->reposition();
+
         if ($object->position >= $this->getMaxPosition()) {
             throw new Exception('Item is already at position ' . (int)$object->position . ' which is max postion. Could not move it any further down.');
         }
