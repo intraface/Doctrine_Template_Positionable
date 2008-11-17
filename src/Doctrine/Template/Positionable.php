@@ -109,15 +109,6 @@ class Doctrine_Template_Positionable extends Doctrine_Template
         return true;
     }
 
-    private function getExtraWhereWithPosition($position)
-    {
-        $where = 'position = ' . intval($position);
-        if (!empty($this->_options['extra_where'])) {
-            $where .= ' AND ' . $this->_options['extra_where'];
-        }
-        return $where;
-    }
-
     /**
      * Moves the item one position down
      *
@@ -239,8 +230,10 @@ class Doctrine_Template_Positionable extends Doctrine_Template
           ->where($this->_options['name'] . ' >= ' . $start_from_position);
 
         $q->orderby($this->_options['name'] . ' ASC');
-        foreach ((array)$this->_options['extra_where'] as $where) {
-            $q->addWhere($where . ' = ?', array($record->{$where}));
+        if (!empty($this->_options['extra_where'])) {
+            foreach ((array)$this->_options['extra_where'] as $where) {
+                $q->addWhere($where . ' = ?', array($record->{$where}));
+            }
         }
 
         $rows = $q->execute();
