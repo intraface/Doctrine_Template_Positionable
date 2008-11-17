@@ -5,7 +5,7 @@
  * PHP version 5
  *
  * @category  Utility
- * @package   Ilib_RandomKeyGenerator
+ * @package   Doctrine_Template_Positionable
  * @author    Lars Olesen <lars@legestue.net>
  * @copyright 2007 Authors
  * @license   GPL http://www.opensource.org/licenses/gpl-license.php
@@ -42,7 +42,7 @@ class StuffWhichShouldBePositionableWithExtraWhere extends Doctrine_Record
  * Test class
  *
  * @category  Utility
- * @package   Ilib_RandomKeyGenerator
+ * @package   Doctrine_Template_Positionable
  * @author    Lars Olesen <lars@legestue.net>
  * @copyright 2007 Authors
  * @license   GPL http://www.opensource.org/licenses/gpl-license.php
@@ -58,7 +58,7 @@ class PositionableWithExtraWhereTest extends PHPUnit_Framework_TestCase
     private $record4;
     private $sqlite_file;
 
-    function setUp()
+    public function setUp()
     {
         $this->sqlite_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'sandbox.db';
         Doctrine_Manager::connection('sqlite:///' . $this->sqlite_file, 'sandbox');
@@ -67,7 +67,7 @@ class PositionableWithExtraWhereTest extends PHPUnit_Framework_TestCase
         $this->createRecords();
     }
 
-    function createRecords()
+    private function createRecords()
     {
         $this->record = new StuffWhichShouldBePositionableWithExtraWhere();
         $this->record->name = 'test1';
@@ -102,7 +102,7 @@ class PositionableWithExtraWhereTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, $this->record4->getPosition());
     }
 
-    function tearDown()
+    public function tearDown()
     {
         $this->record->delete();
         $this->record1->delete();
@@ -110,7 +110,6 @@ class PositionableWithExtraWhereTest extends PHPUnit_Framework_TestCase
         $this->record3->delete();
         $this->record4->delete();
         if (file_exists($this->sqlite_file)) {
-            chmod($this->sqlite_file, 777);
             @unlink($this->sqlite_file);
         }
     }
@@ -179,5 +178,4 @@ class PositionableWithExtraWhereTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->record->moveTo($move_to_pos));
         $this->assertEquals(2, $this->record->getPosition());
     }
-
 }

@@ -86,9 +86,22 @@ class Doctrine_Template_Positionable extends Doctrine_Template
         }
 
         $table = Doctrine::getTable($object->getTable()->name);
-        $row = $table->findOneByPosition($object->position - 1);
-        $row->position = $object->position;
-        $row->save();
+
+        $q = Doctrine_Query::create();
+        $q->select($this->_options['name'], 'id')
+          ->from($object->getTable()->name);
+        $q->addWhere('position = ?', array($object->position - 1));
+
+        if (!empty($this->_options['extra_where'])) {
+            foreach ($this->_options['extra_where'] as $where) {
+                $q->addWhere($where . ' = ?', array($object->{$where}));
+            }
+        }
+        $q->orderby($this->_options['name'] . ' ASC');
+        $rows = $q->execute();
+
+        $rows[0]->position = $object->position;
+        $rows[0]->save();
 
         $object->position = $object->position - 1;
         $object->save();
@@ -121,12 +134,17 @@ class Doctrine_Template_Positionable extends Doctrine_Template
         //$row = $table->findOneByPosition($object->position + 1);
 
         $q = Doctrine_Query::create();
+        $q->select($this->_options['name'], 'id')
+          ->from($object->getTable()->name);
+        $q->addWhere('position = ?', array($object->position + 1));
 
-        $rows = $q->select($this->_options['name'], 'id')
-          ->from($object->getTable()->name)
-          ->where($this->getExtraWhereWithPosition($object->position + 1))
-          ->orderby($this->_options['name'] . ' ASC')
-          ->execute();
+        if (!empty($this->_options['extra_where'])) {
+            foreach ($this->_options['extra_where'] as $where) {
+                $q->addWhere($where . ' = ?', array($object->{$where}));
+            }
+        }
+        $q->orderby($this->_options['name'] . ' ASC');
+        $rows = $q->execute();
 
         $rows[0]->position = $object->position;
         $rows[0]->save();
@@ -180,7 +198,23 @@ class Doctrine_Template_Positionable extends Doctrine_Template
         $record = $this->getInvoker();
         $conn = Doctrine_Manager::connection();
         try {
-            $collection = $record->getTable()->findAll();
+            if (!empty($this->_options['extra_where'])) {
+                try {
+                    $q = $record->getTable()->createQuery();
+                    $q->select('*');
+                    foreach ((array)$this->_options['extra_where'] as $where) {
+                        $q->addWhere($where . ' = ?', array($record->{$where}));
+                    }
+                    $collection = $q->execute();
+                } catch (Doctrine_Exception $e) {
+                    throw $e;
+                } catch (Exception $e) {
+                    throw $e;
+                }
+            } else {
+                $collection = $record->getTable()->findAll();
+            }
+
             $object = $collection->getLast();
             $name = $this->_options['name'];
             $max = $object->$name;
@@ -200,11 +234,16 @@ class Doctrine_Template_Positionable extends Doctrine_Template
         $record = $this->getInvoker();
         $q = Doctrine_Query::create();
 
-        $rows = $q->select($this->_options['name'], 'id')
+        $q->select($this->_options['name'], 'id')
           ->from($record->getTable()->name)
-          ->where($this->_options['name'] . ' >= ' . $start_from_position)
-          ->orderby($this->_options['name'] . ' ASC')
-          ->execute();
+          ->where($this->_options['name'] . ' >= ' . $start_from_position);
+
+        $q->orderby($this->_options['name'] . ' ASC');
+        foreach ((array)$this->_options['extra_where'] as $where) {
+            $q->addWhere($where . ' = ?', array($record->{$where}));
+        }
+
+        $rows = $q->execute();
 
         foreach ($rows as $row) {
             $row->position = $new_position;

@@ -5,7 +5,7 @@
  * PHP version 5
  *
  * @category  Utility
- * @package   Ilib_RandomKeyGenerator
+ * @package   Doctrine_Template_Positionable
  * @author    Lars Olesen <lars@legestue.net>
  * @copyright 2007 Authors
  * @license   GPL http://www.opensource.org/licenses/gpl-license.php
