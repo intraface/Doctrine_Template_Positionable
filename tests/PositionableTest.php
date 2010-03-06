@@ -37,7 +37,7 @@ class StuffWhichShouldBePositionable extends Doctrine_Record
     }
 }
 
-
+/*
 class StuffWhichShouldBePositionableWithExtraWhere extends Doctrine_Record
 {
     function setTableDefinition()
@@ -52,6 +52,7 @@ class StuffWhichShouldBePositionableWithExtraWhere extends Doctrine_Record
         $this->actAs('Positionable', $options);
     }
 }
+*/
 
 /**
  * Test class
