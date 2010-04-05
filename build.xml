@@ -4,7 +4,7 @@
     <taskdef classname="phing.tasks.ext.IlibPearDeployerTask" name="peardeploy" />
 
     <property name="package-name" value="${phing.project.name}" />
-    <property name="version" value="0.2.0" />
+    <property name="version" value="0.2.1" />
     <property name="stability" value="alpha" />
     <property name="pear.channel" value="public.intraface.dk" />
 
@@ -52,9 +52,9 @@
             <dependencies>
                 <php minimum_version="5.2.0" />
                 <pear minimum_version="1.6.0" recommended_version="1.6.1" />
-                <package name="Doctrine" channel="pear.phpdoctrine.org" recommended_version="1.1.2" minimum_version="1.0.0" />
+                <package name="Doctrine" channel="pear.doctrine.project.org" minimum_version="1.2.2" />
             </dependencies>
-            <notes>* Now added so it is possible to have extra_where also.</notes>
+            <notes>* Updated dependency for doctrine pear package</notes>
         </d51pearpkg2>
     </target>
 
