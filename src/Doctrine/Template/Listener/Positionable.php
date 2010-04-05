@@ -20,7 +20,7 @@
  */
 
 /**
- * Doctrine_Template_Listener_Sluggable
+ * Doctrine_Template_Listener_Positionable
  *
  * Easily create a slug for each record based on a specified set of fields
  *
@@ -30,7 +30,7 @@
  * @link        www.phpdoctrine.org
  * @since       1.0
  * @version     $Revision$
- * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
+ * @author      Lars Olesen <lars@legestue.net>
  */
 class Doctrine_Template_Listener_Positionable extends Doctrine_Record_Listener
 {
