@@ -6,5 +6,5 @@ A template for Doctrine Record to make the records positionable, having a field 
 Installation
 --
 
-    pear channel-discover public.intraface.dk
-    pear install intrafacepublic/Doctrine_Template_Positionable
+    pear channel-discover pearhub.org
+    pear install pearhub/Doctrine_Template_Positionable
