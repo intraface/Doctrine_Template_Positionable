@@ -1,9 +1,7 @@
 <?php
-require_once 'PHPUnit/Framework.php';
-require_once 'Doctrine.php';
-
 set_include_path(realpath(dirname(__FILE__) . '/../src/') . PATH_SEPARATOR . get_include_path());
 
+require_once 'Doctrine.php';
 spl_autoload_register(array('Doctrine', 'autoload'));
 
 require_once dirname(__FILE__) . '/../src/Doctrine/Template/Positionable.php';
@@ -51,7 +49,6 @@ $record1->moveUp();
 echo $record1->getPosition(); // outputs 2
 echo $record2->getPosition(); // outputs 1
 echo $record3->getPosition(); // outputs 3
-
 
 $record1->delete();
 $record2->delete();
