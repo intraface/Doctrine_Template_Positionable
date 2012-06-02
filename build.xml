@@ -37,6 +37,7 @@
             </fileset>
         </copy>
     </target>
+    
     <target name="pear" depends="export">
         <d51pearpkg2 dir="${build.dir}/package/${package-name}-${version}/" baseinstalldir="/">
             <name>${package-name}</name>
@@ -60,6 +61,7 @@
     </target>
 
     <target name="build" depends="prepare, export, phpcs, php-documentor, make-pear-package"></target>
+    
     <target name="make-pear-package" depends="pear">
         <tar compression="gzip" destfile="${build.dir}/${package-name}-${version}.tgz" basedir="${build.dir}/package" />
     </target>
