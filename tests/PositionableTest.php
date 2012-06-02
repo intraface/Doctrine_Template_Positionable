@@ -12,16 +12,8 @@
  * @version   <package-version>
  * @link      http://public.intraface.dk
  */
-require_once 'PHPUnit/Framework.php';
-require_once 'Doctrine/lib/Doctrine.php';
-
-set_include_path(realpath(dirname(__FILE__) . '/../src/') . PATH_SEPARATOR . get_include_path());
-
-spl_autoload_register(array('Doctrine', 'autoload'));
 
 require_once dirname(__FILE__) . '/../src/Doctrine/Template/Positionable.php';
-
-PHPUnit_Util_Filter::addDirectoryToWhitelist(realpath(dirname(__FILE__) . '/../src/'));
 
 class StuffWhichShouldBePositionable extends Doctrine_Record
 {

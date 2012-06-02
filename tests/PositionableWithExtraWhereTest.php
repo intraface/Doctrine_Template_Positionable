@@ -12,16 +12,8 @@
  * @version   <package-version>
  * @link      http://public.intraface.dk
  */
-require_once 'PHPUnit/Framework.php';
-require_once 'Doctrine/lib/Doctrine.php';
-
-set_include_path(realpath(dirname(__FILE__) . '/../src/') . PATH_SEPARATOR . get_include_path());
-
-spl_autoload_register(array('Doctrine', 'autoload'));
 
 require_once dirname(__FILE__) . '/../src/Doctrine/Template/Positionable.php';
-
-PHPUnit_Util_Filter::addDirectoryToWhitelist(realpath(dirname(__FILE__) . '/../src/'));
 
 class StuffWhichShouldBePositionableWithExtraWhere extends Doctrine_Record
 {
@@ -61,13 +53,17 @@ class PositionableWithExtraWhereTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->sqlite_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'sandbox.db';
-        Doctrine_Manager::connection('sqlite:///' . $this->sqlite_file, 'sandbox');
-        Doctrine::createTablesFromArray(array('StuffWhichShouldBePositionableWithExtraWhere'));
-
+        $result = Doctrine_Manager::connection('sqlite:///' . $this->sqlite_file, 'sandbox');
+        try {
+            $result = Doctrine::createTablesFromArray(array('StuffWhichShouldBePositionableWithExtraWhere'));
+        } catch (Exception $e) {
+            print($e->getMessage()); 
+        }
+        
         $this->createRecords();
     }
 
-    private function createRecords()
+    protected function createRecords()
     {
         $this->record = new StuffWhichShouldBePositionableWithExtraWhere();
         $this->record->name = 'test1';
