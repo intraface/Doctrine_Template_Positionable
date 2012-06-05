@@ -29,23 +29,6 @@ class StuffWhichShouldBePositionable extends Doctrine_Record
     }
 }
 
-/*
-class StuffWhichShouldBePositionableWithExtraWhere extends Doctrine_Record
-{
-    function setTableDefinition()
-    {
-        $this->hasColumn('name', 'string', 255);
-        $this->hasColumn('belong_to_id', 'integer', 11);
-    }
-
-    function setUp()
-    {
-        $options = array('extra_where' => 'belong_to_id = 1');
-        $this->actAs('Positionable', $options);
-    }
-}
-*/
-
 /**
  * Test class
  *
