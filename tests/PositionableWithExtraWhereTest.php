@@ -52,8 +52,7 @@ class PositionableWithExtraWhereTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->sqlite_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'sandbox.db';
-        $result = Doctrine_Manager::connection('sqlite:///' . $this->sqlite_file, 'sandbox');
+        $result = Doctrine_Manager::connection('sqlite::memory:', 'sandbox');
         try {
             $result = Doctrine::createTablesFromArray(array('StuffWhichShouldBePositionableWithExtraWhere'));
         } catch (Exception $e) {
@@ -93,7 +92,6 @@ class PositionableWithExtraWhereTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->record->getPosition());
         $this->assertEquals(2, $this->record1->getPosition());
         $this->assertEquals(3, $this->record2->getPosition());
-
         $this->assertEquals(1, $this->record3->getPosition());
         $this->assertEquals(2, $this->record4->getPosition());
     }
@@ -105,9 +103,6 @@ class PositionableWithExtraWhereTest extends PHPUnit_Framework_TestCase
         $this->record2->delete();
         $this->record3->delete();
         $this->record4->delete();
-        if (file_exists($this->sqlite_file)) {
-            @unlink($this->sqlite_file);
-        }
     }
 
     public function testPreInsertSetsThePositionOnSave()
@@ -162,7 +157,6 @@ class PositionableWithExtraWhereTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, $this->record->getPosition());
         $this->assertEquals(1, $this->record1->getPosition());
         $this->assertEquals(3, $this->record2->getPosition());
-
     }
 
     function testGetPosition()

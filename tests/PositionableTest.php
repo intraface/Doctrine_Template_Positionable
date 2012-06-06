@@ -33,7 +33,7 @@ class StuffWhichShouldBePositionable extends Doctrine_Record
  * Test class
  *
  * @category  Utility
- * @package   Ilib_RandomKeyGenerator
+ * @package   Doctrine_Template_Positionable
  * @author    Lars Olesen <lars@legestue.net>
  * @copyright 2007 Authors
  * @license   GPL http://www.opensource.org/licenses/gpl-license.php
@@ -51,8 +51,7 @@ class PositionableTest extends PHPUnit_Framework_TestCase
 
     function setUp()
     {
-        $this->sqlite_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'sandbox.db';
-        Doctrine_Manager::connection('sqlite:///' . $this->sqlite_file, 'sandbox');
+        Doctrine_Manager::connection('sqlite::memory:', 'sandbox');
         Doctrine::createTablesFromArray(array('StuffWhichShouldBePositionable'));
 
         $this->createRecords();
@@ -97,10 +96,6 @@ class PositionableTest extends PHPUnit_Framework_TestCase
         $this->record2->delete();
         $this->record3->delete();
         $this->record4->delete();
-        if (file_exists($this->sqlite_file)) {
-            chmod($this->sqlite_file, 777);
-            @unlink($this->sqlite_file);
-        }
     }
 
     public function testPreInsertSetsThePositionOnSave()
@@ -155,7 +150,6 @@ class PositionableTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, $this->record->getPosition());
         $this->assertEquals(1, $this->record1->getPosition());
         $this->assertEquals(3, $this->record2->getPosition());
-
     }
 
     function testGetPosition()
@@ -167,5 +161,4 @@ class PositionableTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->record->moveTo($move_to_pos));
         $this->assertEquals(2, $this->record->getPosition());
     }
-
 }
