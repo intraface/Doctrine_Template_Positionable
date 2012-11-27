@@ -54,7 +54,7 @@
             <dependencies>
                 <php minimum_version="5.2.0" />
                 <pear minimum_version="1.6.0" recommended_version="1.6.1" />
-                <package name="Doctrine" channel="pear.doctrine.project.org" recommended_version="" minimum_version="1.2.2" />
+                <package name="Doctrine" channel="pear.doctrine-project.org" recommended_version="" minimum_version="1.2.2" />
             </dependencies>
             <notes>* Updated dependency for doctrine pear package</notes>
         </d51pearpkg2>
