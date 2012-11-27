@@ -1,0 +1,6 @@
+pear.channel.uri      = http://public.intraface.dk/frontend.php
+pear.channel.username = user
+pear.channel.password = password
+ftp.host              = public.intraface.dk
+ftp.user              = ftpuser
+ftp.password          = ftppass
