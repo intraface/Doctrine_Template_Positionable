@@ -6,7 +6,6 @@ php:
   - 5.6
 before_script:
   - sudo apt-get install php5-sqlite
-  - pear channel-discover pear.doctrine-project.org
-  - pear install doctrine/Doctrine
-  - phpenv rehash
+  - travis_retry composer self-update && composer --version
+  - travis_retry composer install --prefer-dist --no-interaction
 script: phpunit --coverage-text tests
