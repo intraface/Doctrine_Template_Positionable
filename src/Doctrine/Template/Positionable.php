@@ -69,7 +69,6 @@ class Doctrine_Template_Positionable extends Doctrine_Template
     public function setTableDefinition()
     {
         $this->hasColumn($this->_options['name'], $this->_options['type'], $this->_options['length'], $this->_options['options']);
-        require_once 'Doctrine/Template/Listener/Positionable.php';
         $this->addListener(new Doctrine_Template_Listener_Positionable($this->_options));
     }
 
