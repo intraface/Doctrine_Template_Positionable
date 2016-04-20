@@ -1,6 +1,6 @@
 
 {
-  "name": "intraface/doctrine-template-positionable",
+    "name": "intraface/doctrine-template-positionable",
     "type": "library",
     "description": "",
     "homepage": "https://github.com/intraface/Doctrine_Template_Positionable",
@@ -16,6 +16,7 @@
         }
     ],
     "secure-http": false,
+    "disable-tls": true,
     "repositories": [
         {
             "type": "pear",
