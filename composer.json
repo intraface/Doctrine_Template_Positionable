@@ -15,8 +15,9 @@
           "email": "sune@intraface.dk"
         }
     ],
-    "secure-http": false,
-    "disable-tls": true,
+    "config": {
+        "secure-http": false
+    },
     "repositories": [
         {
             "type": "pear",
