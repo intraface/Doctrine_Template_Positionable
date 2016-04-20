@@ -15,6 +15,7 @@
           "email": "sune@intraface.dk"
         }
     ],
+    "secure-http": false,
     "repositories": [
         {
             "type": "pear",
